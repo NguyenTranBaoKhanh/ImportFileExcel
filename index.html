@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Import Excel into HTML Form</title>
+    <script src="/xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    <!-- <form id="myForm" action="submit.php" method="POST">
+        <input type="text" id="name" name="name" placeholder="Name">
+        <input type="text" id="email" name="email" placeholder="Email">
+        <input type="submit" value="Submit">
+    </form> -->
+
+
+
+
+
+    <!-- <form id="myForm" action="submit.php" method="POST">
+        <input type="file" id="excelFile" accept=".xls, .xlsx">
+    </form>
+
+    <div id="dataRows"></div> -->
+
+
+
+
+
+
+    <form id="myForm" action="submit.php" method="POST">
+        <input type="file" id="excelFile1" accept=".xls, .xlsx">
+        <input type="file" id="excelFile2" accept=".xls, .xlsx">
+        <input type="file" id="excelFile3" accept=".xls, .xlsx">
+    </form>
+
+    <div id="inputContainer"></div>
+
+    
+
+
+    <script>
+        for (let index = 0; index < 4; index++) {
+            
+            $(document).ready(function () {
+            
+            $('#excelFile'+index).change(function (e,) {
+                var file = e.target.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var data = new Uint8Array(e.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                    // Process the data as needed
+                    // ...
+
+
+                    // // Example: Set form field values
+                    // $('#name').val(jsonData[0][0]);
+                    // $('#email').val(jsonData[0][1]);
+
+
+
+
+
+                    // // Clear existing rows, if any
+                    // $('#dataRows').empty();
+
+                    // // Loop through the rows of the Excel data
+                    // for (var i = 0; i < jsonData.length; i++) {
+                    //     var row = jsonData[i];
+
+                    //     // Create a new row element
+                    //     var rowElement = $('<div class="row">');
+
+                    //     // Loop through the columns of each row
+                    //     for (var j = 0; j < row.length; j++) {
+                    //         var cellValue = row[j];
+
+                    //         // Create a new cell element and set the cell value
+                    //         var cellElement = $('<div class="cell">').text(cellValue);
+
+                    //         // Append the cell element to the row element
+                    //         rowElement.append(cellElement);
+                    //     }
+
+                    //     // Append the row element to the container
+                    //     $('#dataRows').append(rowElement);
+                    // }
+
+
+
+
+
+                    // // Clear existing input fields, if any
+                    // $('#inputContainer').empty();
+
+                    // // Loop through the rows of the Excel data
+                    // for (var i = 0; i < jsonData.length; i++) {
+                    //     var row = jsonData[i];
+
+                    //     // Create a container div for the row inputs
+                    //     var rowContainer = $('<div>');
+
+                    //     // Loop through the columns of each row
+                    //     for (var j = 0; j < row.length; j++) {
+                    //         var cellValue = row[j];
+
+                    //         // Create a new input field
+                    //         var inputField = $('<input>').attr({
+                    //             type: 'text',
+                    //             value: cellValue,
+                    //             name: "fullname"
+                    //         });
+
+                    //         // Append the input field to the row container
+                    //         rowContainer.append(inputField);
+                    //     }
+
+                    //     // Append the row container to the input container
+                    //     $('#inputContainer').append(rowContainer);
+                    // }
+
+
+
+
+
+
+                    // Clear existing input fields, if any
+                    // $('#inputContainer').empty();
+
+                    // Loop through the rows of the Excel data
+                    for (var i = 0; i < jsonData.length; i++) {
+                        var row = jsonData[i];
+
+                        // Create a container div for the row inputs
+                        var rowContainer = $('<div>');
+                            rowContainer.addClass('aaaa')
+
+                        // Loop through the columns of each row
+                        for (var j = 0; j < row.length; j++) {
+                            var cellValue = row[j];
+
+                            // Create a new input field with a unique name
+                            var inputField = $('<input>').attr({
+                                type: 'text',
+                                value: cellValue,
+                                name: j==0?"Titles":j==1?"Names":"Units"
+                                // name: 'row_' + i + '_column_' + j
+                            });
+
+                            // Append the input field to the row container
+                            rowContainer.append(inputField);
+                        }
+
+                        // Append the row container to the input container
+                        $('#inputContainer').append(rowContainer);
+                    }
+
+                };
+
+                reader.readAsArrayBuffer(file);
+            });
+        });
+        }
+        
+    </script>
+
+</body>
+
+</html>
